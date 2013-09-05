@@ -30,11 +30,7 @@ public class DefaultActivity extends Activity {
     private Button cacheAdButtonView = null;
     private Button showAdButtonView = null;
     
-    private DefaultApplication application = null;
-    
     private static final int AD_ACTIVITY = 0;
-    
-    private boolean useCache = false;
     
     PaeDae.AdInterface adInterface = new PaeDae.AdInterface() {
 		@Override
@@ -43,19 +39,20 @@ public class DefaultActivity extends Activity {
 			statusView.setText("Ad Unavailable");
 			enableControls();
 		}
-		
+
+		@Override
+		public void onAdCached(String milestoneUniqueId) {
+			Log.d(TAG, "ad cached");
+			statusView.setText("Ad Cached for: " + milestoneUniqueId);
+			enableControls();
+		}
+
 		@Override
 		public void onAdReady(Intent intent) {
 			Log.d(TAG, "ad is ready to be shown");
 			statusView.setText("Ad Was Loaded");
 			enableControls();
-			
-			if (useCache) {
-				cacheAdButtonView.setText("Show Cached Ad");
-				application.addCachedAdIntent(milestoneUniqueIdView.getText().toString(), intent);
-			} else {
-				startActivityForResult(intent, AD_ACTIVITY);
-			}
+			startActivityForResult(intent, AD_ACTIVITY);
 		}
 	};
     
@@ -67,8 +64,6 @@ public class DefaultActivity extends Activity {
         statusView = (TextView) findViewById(R.id.sdk_status); 
         milestoneUniqueIdView = (EditText) findViewById(R.id.milestone_unique_id); 
         
-        application = (DefaultApplication) getApplication();
-        
         statusView.setText("PaeDaeSDK v" + com.paedae.android.sdk.Consts.VERSION);
         
         Log.d(TAG, "Started DefaultActivity");
@@ -77,15 +72,6 @@ public class DefaultActivity extends Activity {
         cacheAdButtonView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent cachedAdIntent = application.getCachedAdIntent(milestoneUniqueIdView.getText().toString());
-				
-				if (cachedAdIntent != null) {
-					application.clearedCachedAdIntent(milestoneUniqueIdView.getText().toString());
-					startActivityForResult(cachedAdIntent, AD_ACTIVITY);
-					return;
-				}
-				
-				useCache = true;
 				disableControls();
 				
 				HashMap<String, Object> options = new HashMap<String, Object>();
@@ -99,7 +85,6 @@ public class DefaultActivity extends Activity {
         showAdButtonView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				useCache = false;
 				disableControls();
 				
 				HashMap<String, Object> options = new HashMap<String, Object>();
@@ -124,14 +109,10 @@ public class DefaultActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == AD_ACTIVITY) {
 	        if (resultCode == AdvertisementActivity.RESULT_AD_DISMISSED) {
-	        	statusView.setText("Ad Action Was Taken");
-	        } else if (resultCode == AdvertisementActivity.RESULT_AD_DISMISSED) {
 	        	statusView.setText("Ad Was Dismissed");
+	        } else if (resultCode == AdvertisementActivity.RESULT_AD_ACTION_TAKEN) {
+	        	statusView.setText("Ad Action Was Taken");
 		    }
-	        
-	        if (useCache) {
-	        	cacheAdButtonView.setText("Cache Ad");
-	        }
 	    }
 	}
 	

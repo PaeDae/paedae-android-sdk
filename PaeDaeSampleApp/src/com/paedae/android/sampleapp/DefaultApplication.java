@@ -11,8 +11,6 @@ import android.util.Log;
 public class DefaultApplication extends Application {
 	private final static String TAG = "DefaultApplication";
 
-	private HashMap<String, Intent> cachedAdIntents = new HashMap<String, Intent>();
-	
 	PaeDae.SessionInterface sessionInterface = new PaeDae.SessionInterface() {
 		@Override
 		public void onSessionStarted() {
@@ -29,17 +27,5 @@ public class DefaultApplication extends Application {
     public void onCreate() {
     	PaeDae.getInstance().setSessionInterface(sessionInterface);
     	PaeDae.getInstance().startSession(this, "b00015e0-5cf7-012f-c818-12313f04f84c");
-    }
-    
-    public void addCachedAdIntent(String milestoneUniqueId, Intent intent) {
-    	cachedAdIntents.put(milestoneUniqueId, intent);
-    }
-    
-    public void clearedCachedAdIntent(String milestoneUniqueId) {
-    	cachedAdIntents.remove(milestoneUniqueId);
-    }
-    
-    public Intent getCachedAdIntent(String milestoneUniqueId) {
-    	return cachedAdIntents.get(milestoneUniqueId);
     }
 }
