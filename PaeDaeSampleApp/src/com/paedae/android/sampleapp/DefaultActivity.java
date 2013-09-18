@@ -32,6 +32,21 @@ public class DefaultActivity extends Activity {
     
     private static final int AD_ACTIVITY = 0;
     
+    private static final String appKey = "b00015e0-5cf7-012f-c818-12313f04f84c";
+    
+    PaeDae.SessionInterface sessionInterface = new PaeDae.SessionInterface() {
+		@Override
+		public void onSessionStarted() {
+			Log.d(TAG, "PaeDae session started");
+			statusView.setText("PaeDaeSDK v" + com.paedae.android.sdk.PaeDae.Consts.VERSION);
+		}
+		
+		@Override
+		public void onSessionFailed() {
+			Log.d(TAG, "PaeDae session failed");
+			statusView.setText("Failed to start session!");
+		}
+	};
     PaeDae.AdInterface adInterface = new PaeDae.AdInterface() {
 		@Override
 		public void onAdUnavailable() {
@@ -52,6 +67,7 @@ public class DefaultActivity extends Activity {
 			Log.d(TAG, "ad is ready to be shown");
 			statusView.setText("Ad Was Loaded");
 			enableControls();
+		
 			startActivityForResult(intent, AD_ACTIVITY);
 		}
 	};
@@ -64,8 +80,6 @@ public class DefaultActivity extends Activity {
         statusView = (TextView) findViewById(R.id.sdk_status); 
         milestoneUniqueIdView = (EditText) findViewById(R.id.milestone_unique_id); 
         
-        statusView.setText("PaeDaeSDK v" + com.paedae.android.sdk.Consts.VERSION);
-        
         Log.d(TAG, "Started DefaultActivity");
         
         cacheAdButtonView = (Button) findViewById(R.id.load_ad_button); 
@@ -73,6 +87,8 @@ public class DefaultActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				disableControls();
+				
+				statusView.setText("Loading ad for: " + milestoneUniqueIdView.getText());
 				
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				options.put("milestone_unique_id", milestoneUniqueIdView.getText().toString());
@@ -87,12 +103,19 @@ public class DefaultActivity extends Activity {
 			public void onClick(View v) {
 				disableControls();
 				
+				statusView.setText("Showing ad for: " + milestoneUniqueIdView.getText());
+				
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				options.put("milestone_unique_id", milestoneUniqueIdView.getText().toString());
 				
 				PaeDae.getInstance().showAd(options);
 			}
 		});
+        
+        statusView.setText("Starting session");
+        
+        PaeDae.getInstance().setSessionInterface(sessionInterface);
+    	PaeDae.getInstance().startSession(this.getApplication(), appKey);
     }
 	
 	protected void onStart() {
@@ -108,10 +131,8 @@ public class DefaultActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == AD_ACTIVITY) {
-	        if (resultCode == AdvertisementActivity.RESULT_AD_DISMISSED) {
-	        	statusView.setText("Ad Was Dismissed");
-	        } else if (resultCode == AdvertisementActivity.RESULT_AD_ACTION_TAKEN) {
-	        	statusView.setText("Ad Action Was Taken");
+	        if (resultCode == AdvertisementActivity.RESULT_AD_FINISHED) {
+	        	statusView.setText("Ad flow finished");
 		    }
 	    }
 	}

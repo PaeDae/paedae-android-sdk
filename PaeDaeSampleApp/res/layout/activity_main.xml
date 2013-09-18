@@ -48,7 +48,7 @@
 	        </TableRow>
 	        
 	    </TableLayout>
-	    
+        
 	    <TextView android:id="@+id/sdk_status"
 	              android:layout_width="fill_parent"
 	              android:layout_height="fill_parent"
