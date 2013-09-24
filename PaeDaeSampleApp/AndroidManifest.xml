@@ -21,9 +21,7 @@
 
         <activity android:name="com.paedae.android.sdk.AdvertisementActivity" 
                   android:theme="@style/Theme.PaeDaeActivity"
-                  android:windowSoftInputMode="stateUnspecified"
                   android:launchMode="singleTask" />
-        <service android:name="com.paedae.android.sdk.PaeDaeService" />
         
     </application>
 
@@ -33,6 +31,5 @@
     
     <!-- PAEDAE OPTIONAL PERMISSIONS -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
 </manifest>
