@@ -38,7 +38,7 @@ public class DefaultActivity extends Activity {
 		@Override
 		public void onSessionStarted() {
 			Log.d(TAG, "PaeDae session started");
-			statusView.setText("PaeDaeSDK v" + com.paedae.android.sdk.PaeDae.Consts.VERSION);
+			statusView.setText("PaeDaeSDK v" + com.paedae.android.sdk.Consts.VERSION);
 		}
 		
 		@Override
