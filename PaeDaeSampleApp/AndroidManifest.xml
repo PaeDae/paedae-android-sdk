@@ -20,8 +20,7 @@
         </activity>
 
         <activity android:name="com.paedae.android.sdk.AdvertisementActivity" 
-                  android:theme="@style/Theme.PaeDaeActivity"
-                  android:launchMode="singleTask" />
+                  android:theme="@style/Theme.PaeDaeActivity" />
         
     </application>
 

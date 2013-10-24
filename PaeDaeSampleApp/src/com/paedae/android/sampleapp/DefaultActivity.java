@@ -30,9 +30,9 @@ public class DefaultActivity extends Activity {
     private Button cacheAdButtonView = null;
     private Button showAdButtonView = null;
     
-    private static final int AD_ACTIVITY = 0;
+    private static final int AD_ACTIVITY = 1;
     
-    private static final String appKey = "b00015e0-5cf7-012f-c818-12313f04f84c";
+    private static final String appKey = "12a1b0cd-2fbc-45c3-b92e-21e34e82cdab";
     
     PaeDae.SessionInterface sessionInterface = new PaeDae.SessionInterface() {
 		@Override
@@ -51,21 +51,21 @@ public class DefaultActivity extends Activity {
 		@Override
 		public void onAdUnavailable() {
 			Log.d(TAG, "ad unavailable");
-			statusView.setText("Ad Unavailable");
+			statusView.setText("Ad unavailable");
 			enableControls();
 		}
 
 		@Override
 		public void onAdCached(String milestoneUniqueId) {
 			Log.d(TAG, "ad cached");
-			statusView.setText("Ad Cached for: " + milestoneUniqueId);
+			statusView.setText("Ad cached for: " + milestoneUniqueId);
 			enableControls();
 		}
 
 		@Override
 		public void onAdReady(Intent intent) {
 			Log.d(TAG, "ad is ready to be shown");
-			statusView.setText("Ad Was Loaded");
+			statusView.setText("Ad was loaded");
 			enableControls();
 		
 			startActivityForResult(intent, AD_ACTIVITY);
@@ -130,9 +130,12 @@ public class DefaultActivity extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    Log.d(TAG, "Received activity result - request code: " + requestCode + " resultCode: " + resultCode);
 	    if (requestCode == AD_ACTIVITY) {
-	        if (resultCode == AdvertisementActivity.RESULT_AD_FINISHED) {
-	        	statusView.setText("Ad flow finished");
+	        if (resultCode == RESULT_CANCELED) {
+	        	statusView.setText("User canceled ad unit");
+		    } else if (requestCode == RESULT_OK) {
+		    	statusView.setText("User completed ad unit");
 		    }
 	    }
 	}
