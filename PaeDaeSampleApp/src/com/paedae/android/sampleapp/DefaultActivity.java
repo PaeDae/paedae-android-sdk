@@ -27,12 +27,11 @@ public class DefaultActivity extends Activity {
     private final String TAG = "SampleApp:DefaultActivity";
     private TextView statusView = null;
     private EditText milestoneUniqueIdView = null;
-    private Button cacheAdButtonView = null;
     private Button showAdButtonView = null;
     
     private static final int AD_ACTIVITY = 1;
     
-    private static final String appKey = "12a1b0cd-2fbc-45c3-b92e-21e34e82cdab";
+    private static final String appKey = "d2630570-da99-012f-7405-12313f04f84c";
     
     PaeDae.SessionInterface sessionInterface = new PaeDae.SessionInterface() {
 		@Override
@@ -56,13 +55,6 @@ public class DefaultActivity extends Activity {
 		}
 
 		@Override
-		public void onAdCached(String milestoneUniqueId) {
-			Log.d(TAG, "ad cached");
-			statusView.setText("Ad cached for: " + milestoneUniqueId);
-			enableControls();
-		}
-
-		@Override
 		public void onAdReady(Intent intent) {
 			Log.d(TAG, "ad is ready to be shown");
 			statusView.setText("Ad was loaded");
@@ -81,21 +73,6 @@ public class DefaultActivity extends Activity {
         milestoneUniqueIdView = (EditText) findViewById(R.id.milestone_unique_id); 
         
         Log.d(TAG, "Started DefaultActivity");
-        
-        cacheAdButtonView = (Button) findViewById(R.id.load_ad_button); 
-        cacheAdButtonView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				disableControls();
-				
-				statusView.setText("Loading ad for: " + milestoneUniqueIdView.getText());
-				
-				HashMap<String, Object> options = new HashMap<String, Object>();
-				options.put("milestone_unique_id", milestoneUniqueIdView.getText().toString());
-				
-				PaeDae.getInstance().loadAd(DefaultActivity.this, options);
-			}
-		});
         
         showAdButtonView = (Button) findViewById(R.id.show_ad_button); 
         showAdButtonView.setOnClickListener(new View.OnClickListener() {
@@ -143,12 +120,10 @@ public class DefaultActivity extends Activity {
 	private void disableControls() {
 		milestoneUniqueIdView.setEnabled(false);
 		showAdButtonView.setEnabled(false);
-		cacheAdButtonView.setEnabled(false);
 	}
 	
 	private void enableControls() {
 		milestoneUniqueIdView.setEnabled(true);
 		showAdButtonView.setEnabled(true);
-		cacheAdButtonView.setEnabled(true);
 	}
 }

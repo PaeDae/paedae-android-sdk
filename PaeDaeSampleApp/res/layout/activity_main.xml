@@ -16,7 +16,7 @@
 	        <TableRow>
 	            <TextView android:layout_width="fill_parent"
 	                      android:layout_height="fill_parent"
-	                      android:text="Milestone Unique ID:" />
+	                      android:text="Zone Slug:" />
 	        </TableRow>
 	        <TableRow>
 
@@ -25,18 +25,9 @@
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:gravity="center"
-	                android:hint="Milestone Unique ID"
-	                android:singleLine="true"
-	                android:text="default.milestone" />
+	                android:hint="Zone Slug"
+	                android:singleLine="true" />
 
-	        </TableRow>
-	        <TableRow>
-	            <Button android:id="@+id/load_ad_button"
-				        android:layout_width="fill_parent"
-				        android:layout_height="fill_parent"
-				        android:padding="@dimen/padding_medium"
-				        android:text="Cache Ad"
-				        tools:context=".DefaultActivity" />
 	        </TableRow>
 	        <TableRow>
 	            <Button android:id="@+id/show_ad_button"
