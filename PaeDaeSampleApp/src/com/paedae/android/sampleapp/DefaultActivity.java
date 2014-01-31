@@ -26,12 +26,12 @@ import android.widget.Toast;
 public class DefaultActivity extends Activity {
     private final String TAG = "SampleApp:DefaultActivity";
     private TextView statusView = null;
-    private EditText milestoneUniqueIdView = null;
+    private EditText zoneIdView = null;
     private Button showAdButtonView = null;
     
     private static final int AD_ACTIVITY = 1;
     
-    private static final String appKey = "d2630570-da99-012f-7405-12313f04f84c";
+    private static final String appId = "enter app id here";
     
     PaeDae.SessionInterface sessionInterface = new PaeDae.SessionInterface() {
 		@Override
@@ -70,7 +70,7 @@ public class DefaultActivity extends Activity {
         setContentView(R.layout.activity_main);
          
         statusView = (TextView) findViewById(R.id.sdk_status); 
-        milestoneUniqueIdView = (EditText) findViewById(R.id.milestone_unique_id); 
+        zoneIdView = (EditText) findViewById(R.id.zone_id); 
         
         Log.d(TAG, "Started DefaultActivity");
         
@@ -80,10 +80,10 @@ public class DefaultActivity extends Activity {
 			public void onClick(View v) {
 				disableControls();
 				
-				statusView.setText("Showing ad for: " + milestoneUniqueIdView.getText());
+				statusView.setText("Showing ad for: " + zoneIdView.getText());
 				
 				HashMap<String, Object> options = new HashMap<String, Object>();
-				options.put("milestone_unique_id", milestoneUniqueIdView.getText().toString());
+				options.put("zone_id", zoneIdView.getText().toString());
 				
 				PaeDae.getInstance().showAd(options);
 			}
@@ -91,8 +91,10 @@ public class DefaultActivity extends Activity {
         
         statusView.setText("Starting session");
         
+        zoneIdView.setText("enter zone id here"); // replace with your own zone id
+        
         PaeDae.getInstance().setSessionInterface(sessionInterface);
-    	PaeDae.getInstance().startSession(this.getApplication(), appKey);
+    	PaeDae.getInstance().startSession(this.getApplication(), appId);
     }
 	
 	protected void onStart() {
@@ -118,12 +120,12 @@ public class DefaultActivity extends Activity {
 	}
 	
 	private void disableControls() {
-		milestoneUniqueIdView.setEnabled(false);
+		zoneIdView.setEnabled(false);
 		showAdButtonView.setEnabled(false);
 	}
 	
 	private void enableControls() {
-		milestoneUniqueIdView.setEnabled(true);
+		zoneIdView.setEnabled(true);
 		showAdButtonView.setEnabled(true);
 	}
 }

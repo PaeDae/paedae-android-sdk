@@ -21,11 +21,11 @@
 	        <TableRow>
 
 	            <EditText
-	                android:id="@+id/milestone_unique_id"
+	                android:id="@+id/zone_id"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:gravity="center"
-	                android:hint="Zone Slug"
+	                android:hint="Zone Id"
 	                android:singleLine="true" />
 
 	        </TableRow>
